@@ -22,4 +22,8 @@ def test_correct_subject(read_message):
 
 
 def test_correct_from_address(read_message):
-    assert read_message.from_address == 'inmail-hit-reply@linkedin.com'
+    assert read_message.from_address == 'Neil McCormick <inmail-hit-reply@linkedin.com>'
+
+
+def test_correct_message_id(read_message):
+    assert read_message.message_id == '<1261984904.6670095.1653714591174@ltx1-app46141.prod.linkedin.com>'

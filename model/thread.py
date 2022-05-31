@@ -24,7 +24,7 @@ class Thread:
             # If there are multiple messages, check if one of them is sent by the user
             for thread_message in self.messages:
                 sender = thread_message.from_address
-                if user_email == sender:
+                if user_email in sender:
                     return True
 
         # If only 1 message, confirm not replied

@@ -19,8 +19,8 @@ class MessagePayload:
             headers=json['headers']
         )
 
-    def get_header(self, name: str) -> str:
-        return first_where(self.headers, lambda h: h['name'] == name)['value']
+    def __getitem__(self, key):
+        return first_where(self.headers, lambda h: h['name'] == key)['value']
 
 
 @dataclass
@@ -39,11 +39,13 @@ class Message:
 
     @property
     def subject(self):
-        return self.payload.get_header('Subject')
+        return self.payload['Subject']
+
+    @property
+    def message_id(self):
+        # Used in "In-Reply-To" header
+        return self.payload['Message-ID']
 
     @property
     def from_address(self):
-        from_str = self.payload.get_header('From')
-        from_parts = from_str.split(' ')
-        from_email = from_parts[len(from_parts) - 1]
-        return from_email[1:len(from_email) - 1]
+        return self.payload['From']
