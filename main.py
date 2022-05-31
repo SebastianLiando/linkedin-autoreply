@@ -1,5 +1,5 @@
 from wit import Wit
-from datetime import datetime
+from datetime import datetime, timedelta
 import os.path
 
 from google.auth.transport.requests import Request
@@ -8,11 +8,9 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-from email.mime.text import MIMEText
-import base64
-
 from core import SCOPES, CONF_THRESHOLD, WIT_ACCESS_TOKEN, INMAIL_ADDR, first_where
 from model.thread import Thread
+from core.reply import create_reply_message, create_job_reply_body
 
 
 def authenticate(token='token.json', client_secret='credentials.json') -> Credentials:
@@ -66,16 +64,14 @@ def main():
         user_profile = service.users().getProfile(userId='me').execute()
         user_email = user_profile['emailAddress']
 
-        # Get all emails from LinkedIn in-mail service
-        today = datetime.now().date()
-        today = today.strftime("%m/%d/%Y")
-        print('Emails from ' + today)
+        # Get all emails from LinkedIn in-mail service from the last 24 hours
+        yesterday = (datetime.now() - timedelta(hours=24)).date()
+        yesterday = yesterday.strftime("%m/%d/%Y")
+        print('Emails from ' + yesterday)
 
-        query = f"from:{INMAIL_ADDR} after:{today}"
-        query = f"from:{INMAIL_ADDR}"
+        query = f"from:{INMAIL_ADDR} after:{yesterday}"
 
-        results = service.users().messages().list(
-            userId='me', q=query, maxResults=1).execute()
+        results = service.users().messages().list(userId='me', q=query).execute()
         messages = results.get('messages', [])
 
         # Quit if there are none
@@ -90,22 +86,29 @@ def main():
             thread = service.users().threads().get(userId='me', id=thread_id).execute()
             thread = Thread.from_json(thread)
 
-            if not thread.is_replied(user_email):
-                # Get Subject
-                first_msg_subject = thread.messages[0].subject
-                print(f'Subject: {first_msg_subject}')
+            # Get Subject
+            first_msg = thread.messages[0]
+            first_msg_subject = first_msg.subject
+            print(f'Subject: {first_msg_subject}')
 
-                # Don't reply if it's not a job offer
-                job_offer = is_job_offer(wit, first_msg_subject)
-                if not job_offer:
-                    print('Not replying.')
-                    return
-
-                print('Job offer detected. Sending a reply.')
-                reply = MIMEText('This is the email body')
-
-            else:
+            # Ignore if message has been replied
+            if thread.is_replied(user_email):
                 print('This thread has been replied. Ignoring...')
+                return
+
+            # Don't reply if it's not a job offer
+            job_offer = is_job_offer(wit, first_msg_subject)
+            if not job_offer:
+                print('Not replying.')
+                return
+
+            print('Job offer detected. Sending a reply.')
+            body = create_job_reply_body(
+                first_msg.receiver_first_name, first_msg.sender_first_name)
+            reply = create_reply_message(body, first_msg)
+
+            service.users().messages().send(
+                userId='me', body=reply['message']).execute()
 
     except HttpError as error:
         print(f'Error: {error}')

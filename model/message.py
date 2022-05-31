@@ -38,14 +38,26 @@ class Message:
         )
 
     @property
-    def subject(self):
+    def subject(self) -> str:
         return self.payload['Subject']
 
     @property
-    def message_id(self):
+    def message_id(self) -> str:
         # Used in "In-Reply-To" header
         return self.payload['Message-ID']
 
     @property
-    def from_address(self):
+    def from_address(self) -> str:
         return self.payload['From']
+
+    @property
+    def to_address(self) -> str:
+        return self.payload['To']
+
+    @property
+    def sender_first_name(self) -> str:
+        return self.from_address.split(" ")[0]
+
+    @property
+    def receiver_first_name(self) -> str:
+        return self.to_address.split(" ")[0]
