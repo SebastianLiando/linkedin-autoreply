@@ -43,7 +43,7 @@ class Message:
 
     @property
     def message_id(self) -> str:
-        # Used in "In-Reply-To" header
+        """The "Message-Id" email header. Used in "In-Reply-To" header"""
         return self.payload['Message-ID']
 
     @property
