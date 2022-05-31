@@ -3,7 +3,7 @@ from model.message import Message
 import base64
 import os
 
-JOB_OFFER_REPLY_BODY = os.environ['JOB_REPLY_BODY']
+JOB_OFFER_REPLY_BODY = os.environ['JOB_OFFER_REPLY_BODY']
 REMARKS = os.environ['JOB_OFFER_REPLY_REMARKS']
 SALUTATION = os.environ.get("SALUTATION", "Dear $name,")
 SIGNATURE = os.environ.get("SIGNATURE", "Sincerely,\n\n$name")
