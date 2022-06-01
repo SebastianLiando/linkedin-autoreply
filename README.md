@@ -22,7 +22,7 @@ To know the appropriate reply, the subject of the email is checked. The script n
 
 ### Setup Gmail API
 
-1. Go to google cloud console and create a new project
+1. Login to [google cloud console](https://console.cloud.google.com/) and create a new project
 2. With the project selected, enable Gmail API
 3. Go to "Credentials" tab, create an OAuth Client ID credential, set the application type to `desktop`
 4. Go to "OAuth Consent Screen" tab and scroll to "Test users" section. Add your LinkedIn connected email as a test user
@@ -33,7 +33,7 @@ If the above steps are successful, you should have `token.json` file in the root
 
 ### Setup Wit.ai
 
-1. Login to Wit.ai using your Facebook account
+1. [Login to Wit.ai](https://wit.ai/) using your Facebook account
 2. Create a new application
 3. Using some sample email subjects about job offers, train the `job_offer` intent.
 
