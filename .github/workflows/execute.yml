@@ -2,7 +2,7 @@ name: Execute main script
 
 on:
   schedule:
-    - cron: "*/11 * * * *"
+    - cron: "*/15 * * * *"
 
 env:
   WIT_ACCESS_TOKEN: ${{secrets.WIT_ACCESS_TOKEN}}
