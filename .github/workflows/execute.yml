@@ -30,4 +30,4 @@ jobs:
           name: "token.json"
           json: ${{secrets.EMAIL_TOKEN}}
       - name: Execute script
-        run: echo "Executing script"
+        run: python main.py
