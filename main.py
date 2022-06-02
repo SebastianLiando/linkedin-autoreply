@@ -94,7 +94,7 @@ def main():
             # Ignore if message has been replied
             if thread.is_replied(user_email):
                 print('This thread has been replied. Ignoring...')
-                return
+                continue
 
             # Don't reply if it's not a job offer
             job_offer = is_job_offer(wit, first_msg_subject)
