@@ -55,6 +55,11 @@ class Message:
         return self.payload['To']
 
     @property
+    def reply_to(self) -> str:
+        """The "Reply-To" header. Used this to reply InMail messages so that it is recognized by LinkedIn as a reply message."""
+        return self.payload['Reply-To']
+
+    @property
     def sender_first_name(self) -> str:
         return self.from_address.split(" ")[0]
 

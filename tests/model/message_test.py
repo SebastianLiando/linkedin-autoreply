@@ -28,6 +28,9 @@ def test_correct_from_address(read_message):
 def test_correct_to_address(read_message):
     assert read_message.to_address == 'Sebastian Liando <sebastianliando@gmail.com>'
 
+def test_correct_reply_to(read_message):
+    assert read_message.reply_to == 'Neil McCormick <bcb412db-d662-4d0a-a2e3-94991d5e2601@reply.linkedin.com>'
+
 
 def test_correct_sender_first_name(read_message):
     assert read_message.sender_first_name == 'Neil'

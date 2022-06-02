@@ -32,7 +32,7 @@ def create_job_reply_body(receiver_name: str, sender_name: str, body: str = JOB_
 
 def create_reply_message(body: str, reply_to: Message) -> dict:
     reply = MIMEText(body)
-    reply['To'] = reply_to.from_address
+    reply['To'] = reply_to.reply_to
     reply['From'] = reply_to.to_address
     reply['In-Reply-To'] = reply_to.message_id
     reply['References'] = reply_to.message_id
