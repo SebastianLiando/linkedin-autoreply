@@ -4,6 +4,8 @@
 
 This script automatically replies to LinkedIn InMail messages according to the detected intention of the message. The purpose of this script is to send a timely reply while allowing the user to read the message at a later time.
 
+> ⚠️ **This project is meant for personal use. There is no intention to break LinkedIn's Terms of Service.**
+
 ## How it Works
 
 ### [Gmail API](https://developers.google.com/gmail/api)
